@@ -733,6 +733,10 @@ CONFIG_PPP_SYNC_TTY=y
 CONFIG_VMWARE_MVP=y
 # CONFIG_VMWARE_MVP_DEBUG is not set
 
+#VMware
+# CONFIG_VMWARE_MVP is not set
+# CONFIG_VMWARE_MVP_DEBUG is not set
+
 CONFIG_HTC_RPM_CMD=y
 
 # SLUB: light weight debugging

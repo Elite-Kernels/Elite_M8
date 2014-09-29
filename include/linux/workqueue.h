@@ -255,10 +255,6 @@ enum {
 	WQ_HIGHPRI		= 1 << 4, /* high priority */
 	WQ_CPU_INTENSIVE	= 1 << 5, /* cpu instensive workqueue */
 
-<<<<<<< HEAD
-	WQ_DRAINING		= 1 << 6, /* internal: workqueue is draining */
-	WQ_RESCUER		= 1 << 7, /* internal: workqueue has rescuer */
-=======
 	/*
 	 * Per-cpu workqueues are generally preferred because they tend to
 	 * show better performance thanks to cache locality.  Per-cpu
@@ -288,7 +284,6 @@ enum {
 
 	WQ_DRAINING		= 1 << 7, /* internal: workqueue is draining */
 	WQ_RESCUER		= 1 << 8, /* internal: workqueue has rescuer */
->>>>>>> 4bdfc8f... [LINARO] workqueues: Introduce new flag WQ_POWER_EFFICIENT for power oriented workqueues
 
 	WQ_MAX_ACTIVE		= 512,	  /* I like 512, better ideas? */
 	WQ_MAX_UNBOUND_PER_CPU	= 4,	  /* 4 * #cpus for unbound wq */

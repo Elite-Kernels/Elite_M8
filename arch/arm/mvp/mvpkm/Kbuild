@@ -8,7 +8,7 @@ ccflags-y += --std=gnu89 -O2 -g2 -ggdb -mapcs -fno-optimize-sibling-calls -mno-s
 ccflags-$(CONFIG_VMWARE_MVP_DEBUG) += -DMVP_DEBUG
 
 asflags-y += -mfpu=neon-vfpv4 -DLIB_ARM_VERSION=7 -DIN_MODULE -DGPLED_CODE
-asflags-y +=  -mfloat-abi=hard
+asflags-y +=  -mfloat-abi=soft
 
 LOWMEMKILLER_PATH := $(srctree)/drivers/staging/android/lowmemorykiller.c
 ifeq ($(wildcard $(LOWMEMKILLER_PATH)),)

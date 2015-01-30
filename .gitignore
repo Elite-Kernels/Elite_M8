@@ -75,6 +75,10 @@ series
 cscope.*
 ncscope.*
 
+# Elite files
+boot.img
+out/*
+
 # gnu global files
 GPATH
 GRTAGS

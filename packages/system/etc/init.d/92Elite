@@ -1,5 +1,20 @@
 #!/system/bin/sh
 
+chmod 666 /sys/block/mmcblk0/queue/scheduler
+chmod 666 /sys/block/mmcblk0/queue/read_ahead_kb
+chmod 666 /sys/block/mmcblk1/queue/scheduler
+chmod 666 /sys/block/mmcblk1/queue/read_ahead_kb
+chmod 666 /sys/module/cpu_boost/parameters/boost_ms
+chmod 666 /sys/module/cpu_boost/parameters/sync_threshold
+chmod 666 /sys/module/cpu_boost/parameters/input_boost_freq 
+chmod 666 /sys/module/cpu_boost/parameters/input_boost_ms
+chmod 666 /sys/android_touch/wake_gestures  
+chmod 666 /sys/android_touch/sweep2wake 
+chmod 666 /sys/android_touch/doubletap2wake  
+chmod 666 /sys/android_touch/sweep2sleep
+chmod 666 /sys/android_touch/pocket_detect
+chmod 666 /sys/android_touch/camera_gesture
+
 #Set Wake Gestures
  #echo 1 > /sys/android_touch/wake_gestures
  echo 0 > /sys/android_touch/wake_gestures
@@ -35,15 +50,6 @@
   echo 0 > /sys/module/hall_sensor/parameters/disable_cover;
   #echo 1 > /sys/module/hall_sensor/parameters/disable_cover;
   
-chmod 666 /sys/block/mmcblk0/queue/scheduler
-chmod 666 /sys/block/mmcblk0/queue/read_ahead_kb
-chmod 666 /sys/block/mmcblk1/queue/scheduler
-chmod 666 /sys/block/mmcblk1/queue/read_ahead_kb
-chmod 666 /sys/module/cpu_boost/parameters/boost_ms
-chmod 666 /sys/module/cpu_boost/parameters/sync_threshold
-chmod 666 /sys/module/cpu_boost/parameters/input_boost_freq 
-chmod 666 /sys/module/cpu_boost/parameters/input_boost_ms
-  
 echo "fiops" > /sys/block/mmcblk0/queue/scheduler
 echo "1024" > /sys/block/mmcblk0/queue/read_ahead_kb
 echo "fiops" > /sys/block/mmcblk1/queue/scheduler
@@ -62,9 +68,11 @@ chmod 644 /sys/module/cpu_boost/parameters/boost_ms
 chmod 644 /sys/module/cpu_boost/parameters/sync_threshold
 chmod 644 /sys/module/cpu_boost/parameters/input_boost_freq 
 chmod 644 /sys/module/cpu_boost/parameters/input_boost_ms
-
-#fstrim
-fstrim -v /cache;
-fstrim -v /data;
+chmod 644 /sys/android_touch/wake_gestures  
+chmod 644 /sys/android_touch/sweep2wake 
+chmod 644 /sys/android_touch/doubletap2wake  
+chmod 644 /sys/android_touch/sweep2sleep
+chmod 644 /sys/android_touch/pocket_detect
+chmod 644 /sys/android_touch/camera_gesture
 
 exit 0

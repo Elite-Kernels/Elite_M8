@@ -3203,12 +3203,24 @@ config MACH_M8_WL
         help
           Support for HTC MSM8974 M8_WL
 
+
+config PERFLOCK
+    depends on CPU_FREQ
+    depends on HTC_PNPMGR
+    default n
+    bool "HTC Performance Lock"
+
 config HAS_MACH_MEMUTILS
 	default y
 	bool "Motorola MSM memcpy enhancements"
 	help
 	Faster memcpy performance for Krait
 endif
+
+config HTC_DEBUG_RBCPR_8226
+    depends on ARCH_MSM8226
+    default n
+    bool "HTC RBCPR debug"
 
 config HTC_MONITOR_SUBSYS_SLEEP_TIME
     default n

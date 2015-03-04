@@ -9,7 +9,7 @@ set_perm_recursive(0, 0, 0755, 0644, "/system/lib/modules");
 symlink("/system/lib/modules/pronto/pronto_wlan.ko", "/system/lib/modules/wlan.ko");
 
 ui_print("Setting Permissions");
-set_perm_recursive(0, 2000, 0777, 0777, "/system/bin/fstrim");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/bin/pnpmgr");
 set_perm_recursive(0, 2000, 0777, 0777, "/system/etc/init.d/92Elite");
 
 ui_print("Extracting Kernel files...");

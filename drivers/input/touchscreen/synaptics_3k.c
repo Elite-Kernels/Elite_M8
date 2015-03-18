@@ -272,6 +272,35 @@ static irqreturn_t synaptics_irq_thread(int irq, void *ptr);
 
 extern unsigned int get_tamper_sf(void);
 
+static DEFINE_MUTEX(syn_block_mutex);
+static void syn_block_touch(struct synaptics_ts_data *ts, int enable)
+{
+       mutex_lock(&syn_block_mutex);
+       ts->hall_block_touch_event = enable;
+       mutex_unlock(&syn_block_mutex);
+}
+
+static void syn_block_touch_work_func(struct work_struct *dummy)
+{
+       struct synaptics_ts_data *ts = gl_ts;
+       syn_block_touch(ts, 0);
+}
+static DECLARE_DELAYED_WORK(syn_block_touch_work, syn_block_touch_work_func);
+
+static void syn_handle_block_touch(struct synaptics_ts_data *ts, int enable)
+{
+       int ret;
+       if (ts->hall_block_touch_event) {
+               ret = __cancel_delayed_work(&syn_block_touch_work);
+               syn_block_touch(ts, 0);
+       }
+       if (enable) {
+               pr_info("[TP][HL] %s: %d\n", __func__, ts->hall_block_touch_time);
+               ret = schedule_delayed_work(&syn_block_touch_work, HZ*ts->hall_block_touch_time/1000);
+               syn_block_touch(ts, 1);
+       }
+}
+
 static int synaptics_ts_suspend(struct device *dev);
 
 #ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_WAKE_GESTURES
@@ -595,35 +624,6 @@ static void sweep2wake_horiz_func(int x, int y, int wake)
 	}
 }
 #endif
-
-static DEFINE_MUTEX(syn_block_mutex);
-static void syn_block_touch(struct synaptics_ts_data *ts, int enable)
-{
-       mutex_lock(&syn_block_mutex);
-       ts->hall_block_touch_event = enable;
-       mutex_unlock(&syn_block_mutex);
-}
-
-static void syn_block_touch_work_func(struct work_struct *dummy)
-{
-       struct synaptics_ts_data *ts = gl_ts;
-       syn_block_touch(ts, 0);
-}
-static DECLARE_DELAYED_WORK(syn_block_touch_work, syn_block_touch_work_func);
-
-static void syn_handle_block_touch(struct synaptics_ts_data *ts, int enable)
-{
-       int ret;
-       if (ts->hall_block_touch_event) {
-               ret = __cancel_delayed_work(&syn_block_touch_work);
-               syn_block_touch(ts, 0);
-       }
-       if (enable) {
-               pr_info("[TP][HL] %s: %d\n", __func__, ts->hall_block_touch_time);
-               ret = schedule_delayed_work(&syn_block_touch_work, HZ*ts->hall_block_touch_time/1000);
-               syn_block_touch(ts, 1);
-       }
-}
 
 static void syn_page_select(struct i2c_client *client, uint8_t page)
 {
@@ -2231,6 +2231,22 @@ static ssize_t syn_cover_store(struct device *dev,
 		if (ts->syn_cover_wq)
 			queue_work(ts->syn_cover_wq, &ts->cover_work);
 
+#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_WAKE_GESTURES
+		if (scr_suspended && ts->cover_enable && !cover_enable_ind && (gestures_switch || dt2w_switch || s2w_switch)) {
+			if (unlikely(boot_mode))
+				return NOTIFY_OK;
+			cover_enable_ind = true;
+			dt2w_reset_handler();
+			disable_irq_wake(ts->client->irq);
+			synaptics_ts_suspend(&ts->client->dev);
+			if(gpio_is_valid(ts->gpio_i2c)) {
+				gpio_direction_output(ts->gpio_i2c, 1);
+				ts->i2c_to_mcu = 1;
+				printk("[TP][SensorHub] Switch touch i2c to MCU (from cover)\n");
+			}
+			touch_status(1);
+		}
+#endif
 		pr_info("[TP] %s: cover_enable = %d.\n", __func__, ts->cover_enable);
 	}
 
@@ -3695,24 +3711,6 @@ static int hallsensor_hover_status_handler_func(struct notifier_block *this,
 				queue_work(ts->syn_cover_wq, &ts->cover_work);
 			}
 		}
-
-#ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_WAKE_GESTURES
-		if (scr_suspended && ts->cover_enable && !cover_enable_ind && (gestures_switch || dt2w_switch || s2w_switch)) {
-			if (unlikely(boot_mode))
-				return NOTIFY_OK;
-			cover_enable_ind = true;
-			dt2w_reset_handler();
-			disable_irq_wake(ts->client->irq);
-			synaptics_ts_suspend(&ts->client->dev);
-			if(gpio_is_valid(ts->gpio_i2c)) {
-				gpio_direction_output(ts->gpio_i2c, 1);
-				ts->i2c_to_mcu = 1;
-				printk("[TP][SensorHub] Switch touch i2c to MCU (from cover)\n");
-			}
-			touch_status(1);
-		}
-#endif
-
 		pr_info("[TP][HL] %s: cover_enable = %d.\n", __func__, ts->cover_enable);
 	}
 

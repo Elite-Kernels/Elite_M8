@@ -556,6 +556,28 @@ CONFIG_NLS_ASCII=y
 CONFIG_NLS_ISO8859_1=y
 
 CONFIG_EXT4_FS_SECURITY=y
+# F2FS support
+CONFIG_F2FS_FS=y
+CONFIG_F2FS_STAT_FS=y
+CONFIG_F2FS_FS_XATTR=y
+# CONFIG_F2FS_FS_POSIX_ACL is not set
+CONFIG_F2FS_FS_SECURITY=y
+# CONFIG_F2FS_CHECK_FS is not set
+
+# CIFS support for Samba
+CONFIG_CIFS=y
+CONFIG_CIFS_STATS=y
+# CONFIG_CIFS_STATS2 is not set
+# CONFIG_CIFS_WEAK_PW_HASH is not set
+# CONFIG_CIFS_UPCALL is not set
+# CONFIG_CIFS_XATTR is not set
+# CONFIG_CIFS_POSIX is not set
+# CONFIG_CIFS_DEBUG2 is not set
+# CONFIG_CIFS_DFS_UPCALL is not set
+# CONFIG_CIFS_FSCACHE is not set
+# CONFIG_CIFS_ACL is not set
+# CONFIG_CIFS_NFSD_EXPORT is not set
+
 #
 # HTC Debugging Features
 #
@@ -667,7 +689,6 @@ CONFIG_SCHED_TRACER=y
 
 # Tuxera exFAT need enable this configuration
 CONFIG_NLS_UTF8=y
-CONFIG_CIFS=m
 
 #
 # exFAT Filesystem

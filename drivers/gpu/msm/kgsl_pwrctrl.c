@@ -35,7 +35,7 @@
 #define UPDATE_BUSY_VAL		1000000
 #define UPDATE_BUSY		50
 
-//extern void set_gpu_clk(unsigned int);
+extern void set_gpu_clk(unsigned int);
 #define INIT_UDELAY		200
 #define MAX_UDELAY		2000
 
@@ -1065,8 +1065,8 @@ int kgsl_pwrctrl_init(struct kgsl_device *device)
 		pwr->pwrlevels[i].io_fraction =
 			pdata->pwrlevel[i].io_fraction;
 	}
-//	if (strstr(device->name, "kgsl-3d") != NULL)
-//		set_gpu_clk(pwr->pwrlevels[0].gpu_freq);
+	if (strstr(device->name, "kgsl-3d") != NULL)
+		set_gpu_clk(pwr->pwrlevels[0].gpu_freq);
 
 	
 	if (pwr->pwrlevels[0].gpu_freq > 0)

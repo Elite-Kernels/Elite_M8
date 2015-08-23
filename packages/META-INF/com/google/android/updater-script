@@ -1,0 +1,22 @@
+ui_print("Elite M8 Kernel for GPE Lollipop...");
+
+ui_print("Mount /System Folder...");
+run_program("/sbin/busybox", "mount", "/system");
+
+ui_print("Extracting System Files...");
+package_extract_dir("system", "/system");
+set_perm_recursive(0, 0, 0755, 0644, "/system/lib/modules");
+symlink("/system/lib/modules/pronto/pronto_wlan.ko", "/system/lib/modules/wlan.ko");
+
+ui_print("Setting Permissions");
+set_perm_recursive(0, 2000, 0777, 0777, "/system/bin/fstrim");
+set_perm_recursive(0, 2000, 0777, 0777, "/system/etc/init.d/92Elite");
+
+ui_print("Extracting Kernel files...");
+package_extract_file("boot.img", "/dev/block/platform/msm_sdcc.1/by-name/boot");
+
+ui_print("Running FSTRIM might take a while");
+run_program("/system/bin/fstrim", "-v", "/system");
+
+ui_print("All Set... Enjoy!");
+show_progress(0.100000, 0);

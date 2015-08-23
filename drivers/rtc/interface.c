@@ -360,6 +360,7 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 	else if (!rtc->ops->set_alarm)
 		err = -EINVAL;
 	else {
+<<<<<<< HEAD
 #ifdef CONFIG_HTC_POWERSAVE_MODE_ALARM
 		/*
 		* @powersave_enabled
@@ -369,11 +370,14 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 		* 4: Performance mode
 		* If it is EPS mode, the unit of rtc_alarm will change from sec to min for powersave.
 		*/
+=======
+/*#ifdef CONFIG_HTC_POWERSAVE_MODE_ALARM
+>>>>>>> b4d5ceb... disable perflock and pnpmgr
 		if ((powersave_enabled == 2) && (alarm->time.tm_sec > 0)) {
 			alarm->time.tm_sec = 0;
 			alarm->time.tm_min++;
 		}
-#endif
+#endif*/
 		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
 	}
 

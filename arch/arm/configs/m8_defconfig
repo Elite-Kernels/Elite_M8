@@ -661,8 +661,8 @@ CONFIG_HTC_HEADSET_INT_REDETECT=y
 #
 # HTC PnPMgr and Perflock
 #
-CONFIG_HTC_PNPMGR=y
-CONFIG_PERFLOCK=y
+# CONFIG_HTC_PNPMGR is not set
+# CONFIG_PERFLOCK is not set
 
 #
 # Systrace

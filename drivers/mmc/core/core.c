@@ -805,11 +805,11 @@ void mmc_start_bkops(struct mmc_card *card, bool from_exception)
 		return;
 	}
 
-	
+/*	
 	if ((powersave_enabled == PP_EXTREMELY_POWERSAVE) && !ac_status)  {
 		pr_debug("%s: skip bkops due to extreme powersave mode\n", __func__);
 		return;
-	}
+	}*/
 
 	mmc_rpm_hold(card->host, &card->dev);
 	
